@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# viseurctl: quick command to control the crosshair from a terminal or a custom GNOME
+# shortcut (Settings → Keyboard → Custom Shortcuts).
+set -euo pipefail
+
+UUID="viseur@mumpkin"
+SCHEMA="org.gnome.shell.extensions.viseur"
+
+dirs=("${XDG_DATA_HOME:-$HOME/.local/share}/gnome-shell/extensions/$UUID"
+      "/usr/share/gnome-shell/extensions/$UUID")
+SCHEMA_DIR=""
+for d in "${dirs[@]}"; do
+    [ -f "$d/schemas/gschemas.compiled" ] && SCHEMA_DIR="$d/schemas" && break
+done
+[ -n "$SCHEMA_DIR" ] || { echo "Viseur extension not found (schema not compiled)." >&2; exit 1; }
+export GSETTINGS_SCHEMA_DIR="$SCHEMA_DIR"
+
+get(){ gsettings get "$SCHEMA" "$1"; }
+set_() { gsettings set "$SCHEMA" "$1" "$2"; }
+
+PROFILES="${XDG_CONFIG_HOME:-$HOME/.config}/viseur/profiles.json"
+
+list_ids() { grep -oE '"id": *"[^"]*"' "$PROFILES" | sed -E 's/.*: *"([^"]*)"/\1/'; }
+
+usage() {
+    cat <<EOF
+Usage: viseurctl <command>
+  on | off | toggle        show / hide the crosshair
+  status                   state and active profile
+  list                     profile ids
+  profile <id>             activate a profile
+  profile next | prev      next / previous profile
+EOF
+}
+
+cmd="${1:-}"
+case "$cmd" in
+    on)     set_ enabled true ;;
+    off)    set_ enabled false ;;
+    toggle) if [ "$(get enabled)" = "true" ]; then set_ enabled false; else set_ enabled true; fi ;;
+    status) echo "enabled=$(get enabled) profile=$(get active-profile)" ;;
+    list)   list_ids ;;
+    profile)
+        target="${2:-}"
+        [ -n "$target" ] || { usage; exit 2; }
+        mapfile -t ids < <(list_ids)
+        current="$(get active-profile | tr -d "'")"
+        case "$target" in
+            next|prev)
+                n=${#ids[@]}; idx=0
+                for i in "${!ids[@]}"; do [ "${ids[$i]}" = "$current" ] && idx=$i; done
+                if [ "$target" = next ]; then idx=$(( (idx + 1) % n )); else idx=$(( (idx - 1 + n) % n )); fi
+                target="${ids[$idx]}" ;;
+        esac
+        printf '%s\n' "${ids[@]}" | grep -qx "$target" || { echo "Unknown profile: $target" >&2; exit 1; }
+        set_ active-profile "'$target'" ;;
+    *) usage; exit 2 ;;
+esac
