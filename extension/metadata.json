@@ -6,5 +6,5 @@
   "url": "https://github.com/mumpkin/viseur",
   "settings-schema": "org.gnome.shell.extensions.viseur",
   "gettext-domain": "viseur@mumpkin",
-  "version-name": "1.0"
+  "version-name": "1.0.0"
 }
