@@ -1,0 +1,8 @@
+/dist/
+gschemas.compiled
+*.shell-extension.zip
+
+# makepkg
+/packaging/src/
+/packaging/pkg/
+/packaging/*.pkg.tar.*
