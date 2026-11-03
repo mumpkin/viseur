@@ -115,6 +115,20 @@ test('metadata.json follows the extensions.gnome.org rules', () => {
     assert.match(schemaXml, /path="\/org\/gnome\/shell\/extensions\//);
 });
 
+test('the version follows SemVer and matches metadata.json, the PKGBUILD and CHANGELOG.md', () => {
+    const version = JSON.parse(read('metadata.json'))['version-name'];
+    assert.match(version, /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/, 'MAJOR.MINOR.PATCH');
+    assert.match(read('../packaging/PKGBUILD'), new RegExp(`^pkgver=${version.replace(/\./g, '\\.')}$`, 'm'));
+
+    const changelog = read('../CHANGELOG.md');
+    assert.match(changelog, /^## \[Unreleased\]$/m);
+    const latest = /^## \[(\d+\.\d+\.\d+)\] - \d{4}-\d{2}-\d{2}$/m.exec(changelog);
+    assert.ok(latest, 'a "## [X.Y.Z] - YYYY-MM-DD" release section');
+    assert.equal(latest[1], version, 'latest CHANGELOG release = version-name');
+    assert.match(changelog, new RegExp(`^\\[${version.replace(/\./g, '\\.')}\\]: https://`, 'm'),
+        'release link at the bottom');
+});
+
 test('process separation: no GTK in the Shell process, no Shell libraries in prefs', () => {
     for (const f of ['extension.js', 'model.js', 'renderer.js', 'profiles.js'])
         assert.doesNotMatch(read(f), /from 'gi:\/\/(Gtk|Gdk|Adw)'/, f);

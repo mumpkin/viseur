@@ -8,7 +8,7 @@ Reference: [review guidelines](https://gjs.guide/extensions/review-guidelines/re
 ```bash
 git remote add origin git@github.com:mumpkin/viseur.git
 git push -u origin main
-git push origin v1.0
+git push origin v1.0.0
 ```
 
 `metadata.json` points to `https://github.com/mumpkin/viseur`: the repository must exist and be public,
@@ -63,9 +63,13 @@ through `extension.js` and `prefs.js` before submitting so you can answer questi
 
 ## 6. Releasing an update
 
-1. Change the code, update `CHANGELOG.md`.
-2. Bump `version-name` in `extension/metadata.json` (e.g. `1.1`). Never add a `version` key:
+1. Change the code and list each change under `## [Unreleased]` in `CHANGELOG.md`
+   ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/) sections: `Added`, `Changed`,
+   `Deprecated`, `Removed`, `Fixed`, `Security`). At release time, rename that section to
+   `## [X.Y.Z] - YYYY-MM-DD`, add a new empty `## [Unreleased]` above it and update the links at the bottom.
+2. Bump `version-name` in `extension/metadata.json` and `pkgver` in `packaging/PKGBUILD` (`make test`
+   checks they match the latest `CHANGELOG.md` release) following [Semantic Versioning](https://semver.org) (`1.0.1` for a fix, `1.1.0` for a new feature, `2.0.0` for a breaking change). Never add a `version` key:
    extensions.gnome.org sets it.
 3. When a new GNOME version is out and tested, add it to `shell-version` (stable releases only).
 4. `make zip`, test the bundle, upload it on <https://extensions.gnome.org/upload/>, tag the release
-   (`git tag v1.1`) and push.
+   (`git tag -a v1.1.0 -m "Viseur 1.1.0"`) and push.
