@@ -1,0 +1,10 @@
+{
+  "uuid": "viseur@mumpkin",
+  "name": "Viseur",
+  "description": "Customizable crosshair overlay that stays visible above fullscreen games and videos.\n\nCross, dot and circle shapes with color, opacity and outline, multiple profiles, keyboard shortcuts, a temporary profile while a shortcut or the right mouse button is held (or toggled), and a panel menu.\n\nWhile the crosshair is shown, fullscreen direct scanout is disabled so the overlay can be drawn; hiding it restores direct scanout.",
+  "shell-version": ["50", "51"],
+  "url": "https://github.com/mumpkin/viseur",
+  "settings-schema": "org.gnome.shell.extensions.viseur",
+  "gettext-domain": "viseur@mumpkin",
+  "version-name": "1.0"
+}

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="viseur@mumpkin">
+  <schema id="org.gnome.shell.extensions.viseur" path="/org/gnome/shell/extensions/viseur/">
+
+    <key name="enabled" type="b">
+      <default>true</default>
+      <summary>Crosshair shown</summary>
+      <description>Shows or hides the crosshair.</description>
+    </key>
+
+    <key name="show-indicator" type="b">
+      <default>true</default>
+      <summary>Icon in the top panel</summary>
+    </key>
+
+    <key name="active-profile" type="s">
+      <default>'default'</default>
+      <summary>Currently displayed profile</summary>
+    </key>
+
+    <key name="default-profile" type="s">
+      <default>'default'</default>
+      <summary>Profile selected at session start</summary>
+    </key>
+
+    <key name="monitor-mode" type="s">
+      <default>'primary'</default>
+      <summary>Target monitor: primary, focus (monitor of the focused window) or index</summary>
+    </key>
+
+    <key name="monitor-index" type="i">
+      <default>0</default>
+      <range min="0" max="15"/>
+      <summary>Monitor number when monitor-mode is index</summary>
+    </key>
+
+    <key name="toggle-shortcut" type="as">
+      <default>['&lt;Control&gt;&lt;Alt&gt;c']</default>
+      <summary>Shortcut: show/hide the crosshair</summary>
+    </key>
+
+    <key name="next-profile-shortcut" type="as">
+      <default>['&lt;Control&gt;&lt;Alt&gt;Right']</default>
+      <summary>Shortcut: next profile</summary>
+    </key>
+
+    <key name="prev-profile-shortcut" type="as">
+      <default>['&lt;Control&gt;&lt;Alt&gt;Left']</default>
+      <summary>Shortcut: previous profile</summary>
+    </key>
+
+    <key name="profile-shortcut-1" type="as">
+      <default>['&lt;Control&gt;&lt;Alt&gt;1']</default>
+      <summary>Shortcut: 1st profile in the list</summary>
+    </key>
+    <key name="profile-shortcut-2" type="as">
+      <default>['&lt;Control&gt;&lt;Alt&gt;2']</default>
+      <summary>Shortcut: 2nd profile in the list</summary>
+    </key>
+    <key name="profile-shortcut-3" type="as">
+      <default>['&lt;Control&gt;&lt;Alt&gt;3']</default>
+      <summary>Shortcut: 3rd profile in the list</summary>
+    </key>
+    <key name="profile-shortcut-4" type="as">
+      <default>['&lt;Control&gt;&lt;Alt&gt;4']</default>
+      <summary>Shortcut: 4th profile in the list</summary>
+    </key>
+
+    <key name="hold-shortcut" type="as">
+      <default>['&lt;Control&gt;&lt;Alt&gt;x']</default>
+      <summary>Hold shortcut: temporary profile</summary>
+      <description>The temporary profile stays displayed while the shortcut's modifier keys (Ctrl, Alt, Shift, Super) are held down. Without a modifier, the shortcut works as a toggle.</description>
+    </key>
+
+    <key name="hold-profile" type="s">
+      <default>'red-dot'</default>
+      <summary>Profile shown while holding (shortcut or right click)</summary>
+    </key>
+
+    <key name="rightclick-hold" type="b">
+      <default>false</default>
+      <summary>Enable the right-click temporary profile (experimental)</summary>
+      <description>Polls the pointer state about 30 times per second while the option is enabled. Does not intercept any click. The behavior is chosen with rightclick-mode. (Key name kept for compatibility.)</description>
+    </key>
+
+    <key name="rightclick-mode" type="s">
+      <choices>
+        <choice value="hold"/>
+        <choice value="toggle"/>
+      </choices>
+      <default>'hold'</default>
+      <summary>Right-click behavior: hold or toggle</summary>
+      <description>hold: the temporary profile is shown while the right button is held down. toggle: a right click shows the temporary profile, the next right click goes back to the previous profile.</description>
+    </key>
+
+  </schema>
+</schemalist>
