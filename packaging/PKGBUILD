@@ -1,0 +1,29 @@
+# Maintainer: mumpkin <chauvel.dimitri@posteo.net>
+# System-wide installation (/usr) of the project from a local copy of the repository:
+#   cd packaging && makepkg -si
+pkgname=gnome-shell-extension-viseur
+pkgver=1.0
+pkgrel=1
+pkgdesc="Customizable crosshair overlay for GNOME Shell on Wayland"
+arch=('any')
+url="https://github.com/mumpkin/viseur"
+license=('GPL-3.0-or-later')
+depends=('gnome-shell>=50' 'gnome-shell<52' 'libadwaita' 'glib2')
+makedepends=('glib2')
+install=viseur.install
+source=()
+
+_uuid="viseur@mumpkin"
+
+build() {
+    rm -rf "$srcdir/ext"
+    cp -r "$startdir/../extension" "$srcdir/ext"
+    rm -f "$srcdir/ext/schemas/gschemas.compiled"
+    glib-compile-schemas --strict "$srcdir/ext/schemas"
+}
+
+package() {
+    install -dm755 "$pkgdir/usr/share/gnome-shell/extensions/$_uuid"
+    cp -r "$srcdir/ext/." "$pkgdir/usr/share/gnome-shell/extensions/$_uuid/"
+    install -Dm755 "$startdir/../scripts/viseurctl" "$pkgdir/usr/bin/viseurctl"
+}

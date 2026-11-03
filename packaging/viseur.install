@@ -1,0 +1,12 @@
+post_install() {
+    echo ">> Viseur: log out and log back in, then run:"
+    echo ">>   gnome-extensions enable viseur@mumpkin"
+}
+
+post_upgrade() {
+    echo ">> Viseur: log in again to load the new version."
+}
+
+post_remove() {
+    echo ">> Viseur: your profiles remain in ~/.config/viseur (delete them manually if needed)."
+}
